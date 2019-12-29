@@ -1,32 +1,43 @@
 language: scala
+
+sudo: false
+
 scala:
 - 2.12.9
 - 2.13.1
-jdk:
-- openjdk11
-sudo: required
-dist: trusty
+
+matrix:
+  include:
+  - jdk: oraclejdk11
+  - jdk: openjdk8
+  - jdk: openjdk11
+
+
+# These directories are cached to S3 at the end of the build
 cache:
   directories:
-  - "$HOME/.ivy2"
-  - "$HOME/.coursier"
-  - "$HOME/.sbt"
+    - $HOME/.cache/coursier
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt/boot/
+    - $HOME/.sbt/launchers
+
 env:
   global:
-  - COURSIER_PROGRESS=0
-  - PUBLISH=true
-  - secure: CFsA+kVfhr3Tm/YKfSoYbQG6R1n8Uph7TCHndCCa1YAITGNCZXRWdHH0O5g10TDp/dXFqxiTt75qfQ+PM86Z2zW1aMApLQCv6HSQQ0+LnQ/DLN1JxJX7TbvkbGiYXXOBPue4rOpqnyZxhNbAULBNJaj0C08PMKGuBCe2KkYVKZTdaMeebOuwB3f03r7CfBUL5x8YaUApxXpl7pqQ0iAMxov8nDbSTEsgrnkMCKT5NP1DlX615d7R2p/UpF0ubhy+9Dea+uEAsWNzT3Yc5OtFJYfg7pQD8U8mYcNrM3kqRGDXYIdgHhsexQkw7bf743qARCzl5DFHrQC4A2QSrAWWrsBXBJoDgtbBl+xE/iFF+0QhjQKVFpqTnYiv2BADOMWjKpS7VMiDhSms51XsTgyVOzAr2jnDucAlZbCfo1P1vXTWUJKF0zmP71N6wVymWBLiMSHiv12Tpkn9PlM9QsmJAVXjL4PhxEjyIwRbpCkutSiG7MOrJ3HLy7rhl08k4POUFAZXB7ccs7MqkNuwfD3aaIZ9vCbTBQJGIFVjv2XTxMS7CE4Ca6gI9PouLdHu8J2NWkVHOFA2W9TtCJrB7cbC30EkCjMN51/mml8Wy9n1ANiT0QjuvQTGnpjZjfaX5WPzz/8ix/tG6YdpuqmEgWc7YFwuHDmGVX7Mj5OSptboOaU=
-  - secure: TKdSHlM/8RKYC6G5LZTG1zFj3AYNpQiX76O4oBMAMqpM/z7L4jlWaPSaoNjD6m7HXVQYn4MwcttwXooqTmV9p34MeIKTJlDCSVzBsjjuRuD9Q6tuQm/1ZLGyA+vHvsq1nN2fYKTT6qv3dpesSCDBl9UYtt+xXvitJskcviipjFK7Hc5O54RAurUsNqcZdaigcpMGM9fVpXJaDHbFCs+1FgBYbJ3+9PBKousku9WcXfhr47gus3HARwJzjndvRpN3tWrjWWp0JW0C7ArSmtKqs7LLhWnbCel8lcU2kMeXNMVABxC67tHjYjFYZP3V0DPL0wDZAQy+b2oq+ed3V60sd60Ahf1jWaQWrG7qNcKx9GkcdllsATguKO1rx2w4rNxsvYGkAypqlkF37vAyK4+ruLJXjw9KhrSBXzz6/R27C8ai04bo9LQRl3DABGB9mJdLF/J3uvs3oebEygimEGK6QbSMceobYoBdaUr4/d6pS65q8Odf1mqT4y0rFJa+Taj1o+51YY1BFfArHjQJuEB1htVEpcl6COnKSqzSIP9Cx/HNLKnap+WxNQMhs13EzG8ILPRLT0ra1ViRVDweqfRs5xr8MDVS385byHJNNncjEcU6bYnVV6TXfsC9I966zRlkCrNfnnCgx2FgOR3lFmjvsjRS/cwc3X5gN0bz9sC44is=
-  - secure: lWyCRq9UTX/O71R/dkEgc8iYaR5nE4npaavmPAYzYp0lRpzDdya5SSC45Nv1BDINTH2g4RRZOI6GONRIHzOI8Gc3dffT5GfN9hg6gZpvj9rwboedOKlUmH2IBM59obUmKXY60x+feKR5kXejF2Wd0zbaDOpPkD2gGv33QmFa3kxSOnqqpTfPzWovA/QKIYnIjUUKqPTUJSltW3U9Mc1O6OrEGxACSoizQXLs0hwcGInNLltnPMcYAVrKRqAJL3s/n6LwurYpC4Ki03FDK/fur7cGzE/5ymp6QCBzaB42nqtqein8kP7rM7feEGLS/RDuS73gyDXgCtRjwJt354au32Ku4vG0htKr2Dg19d+T/mMw1IhxYq/I3OFveJFLy5MEw8O7r5/PMnhYu/yAwyGtXJoyRWsD9jOemvof01T5oywkcZpncvWmo0cBgzH3iQyXwIr4BotSDNJdP2xBymcHDY4oh/K0fB8vUunJ9VD1QojE3M8QT5xDIBWVbInQK0MH7yeA9+IGG4PKg/m4NyBv6sr5arOA1aVrstVrPK66RkG9ViQkMEiKMbR9uvc/nc1fz+Vxr5a1gQ8R2g3brsXIQN28zFbaGXzcl+1mqkPC9mKjvF1D+qJI3wYkUYjWPt0ja14zS9NyMtI2sfc4HLf1SE0AuJtc/WtrzQgiPP9bQME=
-before_install:
-- git fetch --tags --depth=10000
-- if [ $TRAVIS_PULL_REQUEST = 'false' ]; then openssl aes-256-cbc -K $encrypted_5d03c3334c1b_key
-  -iv $encrypted_5d03c3334c1b_iv -in travis/secrets.tar.enc -out travis/secrets.tar
-  -d; tar xv -C travis -f travis/secrets.tar; fi
+    - COURSIER_PROGRESS=0
+    - secure: CFsA+kVfhr3Tm/YKfSoYbQG6R1n8Uph7TCHndCCa1YAITGNCZXRWdHH0O5g10TDp/dXFqxiTt75qfQ+PM86Z2zW1aMApLQCv6HSQQ0+LnQ/DLN1JxJX7TbvkbGiYXXOBPue4rOpqnyZxhNbAULBNJaj0C08PMKGuBCe2KkYVKZTdaMeebOuwB3f03r7CfBUL5x8YaUApxXpl7pqQ0iAMxov8nDbSTEsgrnkMCKT5NP1DlX615d7R2p/UpF0ubhy+9Dea+uEAsWNzT3Yc5OtFJYfg7pQD8U8mYcNrM3kqRGDXYIdgHhsexQkw7bf743qARCzl5DFHrQC4A2QSrAWWrsBXBJoDgtbBl+xE/iFF+0QhjQKVFpqTnYiv2BADOMWjKpS7VMiDhSms51XsTgyVOzAr2jnDucAlZbCfo1P1vXTWUJKF0zmP71N6wVymWBLiMSHiv12Tpkn9PlM9QsmJAVXjL4PhxEjyIwRbpCkutSiG7MOrJ3HLy7rhl08k4POUFAZXB7ccs7MqkNuwfD3aaIZ9vCbTBQJGIFVjv2XTxMS7CE4Ca6gI9PouLdHu8J2NWkVHOFA2W9TtCJrB7cbC30EkCjMN51/mml8Wy9n1ANiT0QjuvQTGnpjZjfaX5WPzz/8ix/tG6YdpuqmEgWc7YFwuHDmGVX7Mj5OSptboOaU=
+    - secure: TKdSHlM/8RKYC6G5LZTG1zFj3AYNpQiX76O4oBMAMqpM/z7L4jlWaPSaoNjD6m7HXVQYn4MwcttwXooqTmV9p34MeIKTJlDCSVzBsjjuRuD9Q6tuQm/1ZLGyA+vHvsq1nN2fYKTT6qv3dpesSCDBl9UYtt+xXvitJskcviipjFK7Hc5O54RAurUsNqcZdaigcpMGM9fVpXJaDHbFCs+1FgBYbJ3+9PBKousku9WcXfhr47gus3HARwJzjndvRpN3tWrjWWp0JW0C7ArSmtKqs7LLhWnbCel8lcU2kMeXNMVABxC67tHjYjFYZP3V0DPL0wDZAQy+b2oq+ed3V60sd60Ahf1jWaQWrG7qNcKx9GkcdllsATguKO1rx2w4rNxsvYGkAypqlkF37vAyK4+ruLJXjw9KhrSBXzz6/R27C8ai04bo9LQRl3DABGB9mJdLF/J3uvs3oebEygimEGK6QbSMceobYoBdaUr4/d6pS65q8Odf1mqT4y0rFJa+Taj1o+51YY1BFfArHjQJuEB1htVEpcl6COnKSqzSIP9Cx/HNLKnap+WxNQMhs13EzG8ILPRLT0ra1ViRVDweqfRs5xr8MDVS385byHJNNncjEcU6bYnVV6TXfsC9I966zRlkCrNfnnCgx2FgOR3lFmjvsjRS/cwc3X5gN0bz9sC44is=
+    - secure: lWyCRq9UTX/O71R/dkEgc8iYaR5nE4npaavmPAYzYp0lRpzDdya5SSC45Nv1BDINTH2g4RRZOI6GONRIHzOI8Gc3dffT5GfN9hg6gZpvj9rwboedOKlUmH2IBM59obUmKXY60x+feKR5kXejF2Wd0zbaDOpPkD2gGv33QmFa3kxSOnqqpTfPzWovA/QKIYnIjUUKqPTUJSltW3U9Mc1O6OrEGxACSoizQXLs0hwcGInNLltnPMcYAVrKRqAJL3s/n6LwurYpC4Ki03FDK/fur7cGzE/5ymp6QCBzaB42nqtqein8kP7rM7feEGLS/RDuS73gyDXgCtRjwJt354au32Ku4vG0htKr2Dg19d+T/mMw1IhxYq/I3OFveJFLy5MEw8O7r5/PMnhYu/yAwyGtXJoyRWsD9jOemvof01T5oywkcZpncvWmo0cBgzH3iQyXwIr4BotSDNJdP2xBymcHDY4oh/K0fB8vUunJ9VD1QojE3M8QT5xDIBWVbInQK0MH7yeA9+IGG4PKg/m4NyBv6sr5arOA1aVrstVrPK66RkG9ViQkMEiKMbR9uvc/nc1fz+Vxr5a1gQ8R2g3brsXIQN28zFbaGXzcl+1mqkPC9mKjvF1D+qJI3wYkUYjWPt0ja14zS9NyMtI2sfc4HLf1SE0AuJtc/WtrzQgiPP9bQME=
+
+before_cache:
+  # Tricks to avoid unnecessary cache updates
+  - find $HOME/.sbt -name "*.lock" | xargs rm
+  - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
+  - rm -f $HOME/.ivy2/.sbt.ivy.lock
+
 script:
-- sbt ++$TRAVIS_SCALA_VERSION fmtCheck
-- sbt ++$TRAVIS_SCALA_VERSION clean compileWithMacroParadise test
-after_success:
-- test $PUBLISH == "true" && test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH
-  == "master" && GPG_WARN_ON_FAILURE=true sbt ++$TRAVIS_SCALA_VERSION clean compileWithMacroParadise
-  releaseEarly
+  - ./.travis.sh
+
+#after_success:
+#- test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH
+#  == "master" && GPG_WARN_ON_FAILURE=true sbt ++$TRAVIS_SCALA_VERSION clean compileWithMacroParadise
+#  releaseEarly
