@@ -6,3 +6,4 @@ sbt fmtCheck compile test &&
     else
       exit 0 # skipping publish, it's regular build
     fi
+
