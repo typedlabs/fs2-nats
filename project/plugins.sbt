@@ -1,5 +1,6 @@
 // CI
-addSbtPlugin("ch.epfl.scala" % "sbt-release-early" % "2.1.1")
+// addSbtPlugin("ch.epfl.scala" % "sbt-release-early" % "2.1.1")
+addSbtPlugin("org.foundweekends" % "sbt-bintray" % "0.5.4")
 addSbtPlugin("com.dwijnand" % "sbt-travisci" % "1.2.0")
 
 // Verification/Validation

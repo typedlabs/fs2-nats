@@ -1,61 +1,66 @@
-inThisBuild(
-  List(
-    onChangedBuildSource := ReloadOnSourceChanges,
-    organization := "com.typedlabs",
-    homepage := Some(url("https://github.com/typedlabs/fs2-nats/")),
-    scmInfo := Some(
-      ScmInfo(
-        url("https://github.com/typedlabs/fs2-nats"),
-        "scm:git:git@github.com:typedlabs/fs2-nats.git"
-      )
-    ),
-    licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
-    developers := List(
-      Developer("jsilva", "Joao Da Silva", "joao@typedlabs.com", url("https://typedlabs.com"))
-    )
+lazy val scala212               = "2.12.9"
+lazy val scala213               = "2.13.1"
+lazy val supportedScalaVersions = List(scala212, scala213)
+
+lazy val scalaSettings = Seq(
+  scalaVersion := scala212,
+  scalacOptions ++= scalacOptionsFor(scalaVersion.value),
+  scalacOptions.in(Compile, console) ~= filterConsoleScalacOptions,
+  scalacOptions.in(Test, console) ~= filterConsoleScalacOptions,
+  // crossScalaVersions := supportedScalaVersions,
+  libraryDependencies ++= Seq(
+    Dependencies.Testing.scalaTest        % Test,
+    Dependencies.Testing.mockitoScalatest % Test
   )
 )
 
-lazy val publishingSettings = Seq(
+lazy val commonSettings = Seq(
+  name := "fs2-nats",
+  organization := "com.typedlabs",
+  description := "Library nats.io based on fs2",
+  licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
+  version := sys.env.getOrElse("TRAVIS_TAG", "0.1-SNAPSHOT"),
   bintrayReleaseOnPublish := true,
   bintrayOrganization := Some("typedlabs"),
   bintrayPackageLabels := Seq("scala", "fs2", "nats", "pubsub", "streams", "streaming"),
   bintrayVcsUrl := Some("https://github.com/typedlabs/fs2-nats"),
-  pomIncludeRepository := { _ =>
-    false
-  }
+  publishArtifact in Test := false,
+  testOptions += Tests.Argument(TestFrameworks.JUnit),
+  onChangedBuildSource := ReloadOnSourceChanges,
+  homepage := Some(url("https://github.com/typedlabs/fs2-nats/")),
+  scmInfo := Some(
+    ScmInfo(
+      url("https://github.com/typedlabs/fs2-nats"),
+      "scm:git:git@github.com:typedlabs/fs2-nats.git"
+    )
+  ),
+  developers := List(
+    Developer("jsilva", "Joao Da Silva", "joao@typedlabs.com", url("https://typedlabs.com"))
+  )
 )
 
-lazy val releaseSettings = Seq(
-  pgpPublicRing := file("./travis/local.pubring.asc"),
-  pgpSecretRing := file("./travis/local.secring.asc"),
-  releaseEarlyWith := BintrayPublisher
-)
 
 lazy val `fs2-nats` = (project in file("."))
-  .settings(publishingSettings)
-  .settings(releaseSettings)
+  .settings(commonSettings)
+  .settings(scalaSettings)
   .settings(
-    name := "fs2-nats",
-    scalaVersion := "2.12.9",
-    crossScalaVersions := Seq("2.12.9", "2.13.1"),
     libraryDependencies ++= Seq(
       // Streaming
-      "co.fs2" %% "fs2-core" % "2.0.0",
-      "co.fs2" %% "fs2-io" % "2.0.0",
+      Dependencies.Fs2.core,
+      Dependencies.Fs2.io,
       // Protocol parsing
-      "org.scodec" %% "scodec-core" % "1.11.4",
-      "org.scodec" %% "scodec-bits" % "1.1.12",
-      "org.scodec" %% "scodec-stream" % "2.0.0",
+      Dependencies.Scodec.core,
+      Dependencies.Scodec.bits,
+      Dependencies.Scodec.stream,
       // Json
-      "io.circe" %% "circe-core" % "0.12.1",
-      "io.circe" %% "circe-generic" % "0.12.1",
-      "io.circe" %% "circe-parser" % "0.12.1",
-      "io.circe" %% "circe-generic-extras" % "0.12.2",
+      Dependencies.Circe.core,
+      Dependencies.Circe.generic,
+      Dependencies.Circe.parser,
+      Dependencies.Circe.genericExtras,
       // Logging
-      "io.chrisdavenport" %% "log4cats-core" % "1.0.1",
-      "io.chrisdavenport" %% "log4cats-slf4j" % "1.0.1",
-      "ch.qos.logback" % "logback-classic" % "1.2.3"
+      Dependencies.Log4Cats.core,
+      Dependencies.Log4Cats.slf4j,
+      Dependencies.Logging.logback
     ),
     commands ++= Seq(compileWithMacroParadise)
   )
