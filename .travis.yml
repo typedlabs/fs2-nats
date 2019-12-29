@@ -20,13 +20,10 @@ env:
   - secure: h/t8Q/ihKpUnOsjvFD4Bk11NoFJDR79stVAUw59QPMz3Puri9NaH8suPvAwiZuK/A+l9nZ9DiTOM4bFwwiAczJ62D2d0cam6numUsicUoHbG4NXR8zbmoa1ha6h0lWB4VAHb2gp6VvIabm03zgaYeDkGsvJog31odDLepo70brmfzovTMzdQysh+15Fl4x4Exo/nmczOEV6cEa7j0HAjWJEGGZ2mTOkm+je/LQDqoTGHmWbnctQHaUxLRteSSh9rRqaEA6N2KkTURtXFCYAcTBevK6+t8HdCyjdFS56tMHA5NeZ7lhq9svprkPiVAHtwjbQC/pGIFcGihsB4vDu+ZdZW0oCHVSVUG6S/yb4IiizLx7Jyu1WpCDAuIaatxlOK3fT0rhM91qeEzwhQdIKo9YGNOZ4XRQaaYmwiNrX3WFyssdFofKjtnXkEvjNHa3L00WpE+ozmLV/JjvxJxGdRPDiLP9dWelYHm9xSi30LV41QQPVm8p6J+YZLK7XN0T81SGgd3+palOOAICHEHHtPV5fNfhjwuiDFXaj6FjRLooge9xED4qq5hobEW1yQRSa5AZcvuMbt5uZ7raKftzlmWCGwnpjiWZVmJBtUlZULNYU2QwHs/0C7ESL4syjZ0oIcwyUc9gLQVOi8MQNbh4QKZ/njMK0lxfSNd4+jfWtY1ds=
 before_install:
 - git fetch --tags --depth=10000
-- if [ $TRAVIS_PULL_REQUEST = 'false' ]; then openssl aes-256-cbc -K $encrypted_5d03c3334c1b_key
-  -iv $encrypted_5d03c3334c1b_iv -in travis/secrets.tar.enc -out travis/secrets.tar
-  -d; tar xv -C travis -f travis/secrets.tar; fi
+- if [ $TRAVIS_PULL_REQUEST = 'false' ]; then openssl aes-256-cbc -K $encrypted_5d03c3334c1b_key -iv $encrypted_5d03c3334c1b_iv -in travis/secrets.tar.enc -out travis/local.secrets.tar -d; tar xv -C travis -f travis/secrets.tar;
+  fi
 script:
 - sbt ++$TRAVIS_SCALA_VERSION fmtCheck
 - sbt ++$TRAVIS_SCALA_VERSION clean compileWithMacroParadise test
 after_success:
-- test $PUBLISH == "true" && test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH
-  == "master" && GPG_WARN_ON_FAILURE=true sbt ++$TRAVIS_SCALA_VERSION clean compileWithMacroParadise
-  releaseEarly
+- test $PUBLISH == "true" && test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && GPG_WARN_ON_FAILURE=true sbt ++$TRAVIS_SCALA_VERSION clean compileWithMacroParadise releaseEarly
