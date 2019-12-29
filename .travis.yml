@@ -1,0 +1,32 @@
+language: scala
+scala:
+- 2.12.9
+- 2.13.1
+jdk:
+- openjdk11
+sudo: required
+dist: trusty
+cache:
+  directories:
+  - "$HOME/.ivy2"
+  - "$HOME/.coursier"
+  - "$HOME/.sbt"
+env:
+  global:
+  - COURSIER_PROGRESS=0
+  - PUBLISH=true
+  - secure: BdPrfOoUqLoSstfAwG1ep5xaULFX9sl6/TQS9JvU3f127yrkvV8BPMWWlWQN20cpKfkQ2aEcgJeou509JG5PlvcLXslXxQ3m92cp3F2MPAYTslkgxMhY/lnRsBVJXMEEOe90+tO9p+ppV9bCVkBG8bMSNO2xg08Pq0p/rw9Gk+YEYm43ZQyeXRs9Tx5AE94suMUrGmtkrnxuYpc5ahLn3SvNE9Mu6AmjUKxbBECPAx89ibu/AS4rKguK1IagsfP3rPamFT9gnvSQC7F05xOT9oYnV/an8+jleOfMsVwQjJXKzBlM9RONqgSHrUFH5cnJ92LFfjWn/VSqFbNVAMQAUpvclTUh3pBCs/l4P7yKlFjEHIpMqMojvi41ybZgu0Ic/i0pzwU/5Jke4ePtbrvLWRrGAkGAyZPnFnlA9kdGsmxhITh+8V7C4YacwR3Mj2h+CdFFFH7NBt7Y86l7ad+9rL2Clibl5cfug70YH3mTcNrkY4oZt658wk+pCLzf7F59bkf4cZQjpnB5nYj8hi6V2THjFhZwKqedHh8vHIQw5GJzrhBFcxTA5nulqKOWijJcoFSZduAUGZ3sVei4YVaCeln+QWWRTIfXyw1BAeSCs/2l5Zn16bJrhQnQkWQkv+PUbj2cBTyFGCOHrHETZ4ftzgpDYevwv+FRTj398UUpkeo=
+  - secure: RN1YGzGsitlxxhuTFngF/IQ8ugpcyIEBtDflht5qvHzfbxBLo763S7uDi9ifVgHpssxfUAhOyyP6RSuQAHm9wnl0VVpgoP3Alxcct5uemQVh28wsJbeplew9Ha6I95NNG0ygzqYR4DLs8vhXXQbRLoVxHO/7PpVGc/KcEXI3f2fqt2fI5ysfXMQhKFJGf2YTkXO9pEOwMK/ZcxGuJ1hJgb2iowJ8J4pw0wcsORoOwd4zYcvlGxRfyqNAtBrdUAhCBvtPvlGH3oWuP1XZXWVRBQ9kogbW84672iwr/QLh0ixhEdjV+RBZ6WZmDrvJ5Eiqmd1AJj8hHxQzBt64k6iTLKRc/AFyiCijTwUeGSzkJAswzv0GSA+a0blbKvV3XSaTEzncZeZBP1ownjDlLxCf5f/a8ii9rD7lmXuGkJOvu/lk5yHJKoB+CmmhevDyhmqyvxx6iVgYLEDymSv8tqKu7kymcKat7pZtJkNYQBjwVIMNoFW2xYT+kCP/TMVcbquDZyZ6dahzN6QSYb79RJxejRwfKdlvTMYhR/CelLzGQk59Ui9i9koA/+6teV67A9Ytugi7+tTdRnxEe819KpVok4L9s8DU5zOXW5+wNC1wbk9FX4YjCH3Eemc3SmSSvflZaN5Zhs1/oHNQodMcfk9+I7UfZa0d41SbIH3ZpaknShA=
+  - secure: h/t8Q/ihKpUnOsjvFD4Bk11NoFJDR79stVAUw59QPMz3Puri9NaH8suPvAwiZuK/A+l9nZ9DiTOM4bFwwiAczJ62D2d0cam6numUsicUoHbG4NXR8zbmoa1ha6h0lWB4VAHb2gp6VvIabm03zgaYeDkGsvJog31odDLepo70brmfzovTMzdQysh+15Fl4x4Exo/nmczOEV6cEa7j0HAjWJEGGZ2mTOkm+je/LQDqoTGHmWbnctQHaUxLRteSSh9rRqaEA6N2KkTURtXFCYAcTBevK6+t8HdCyjdFS56tMHA5NeZ7lhq9svprkPiVAHtwjbQC/pGIFcGihsB4vDu+ZdZW0oCHVSVUG6S/yb4IiizLx7Jyu1WpCDAuIaatxlOK3fT0rhM91qeEzwhQdIKo9YGNOZ4XRQaaYmwiNrX3WFyssdFofKjtnXkEvjNHa3L00WpE+ozmLV/JjvxJxGdRPDiLP9dWelYHm9xSi30LV41QQPVm8p6J+YZLK7XN0T81SGgd3+palOOAICHEHHtPV5fNfhjwuiDFXaj6FjRLooge9xED4qq5hobEW1yQRSa5AZcvuMbt5uZ7raKftzlmWCGwnpjiWZVmJBtUlZULNYU2QwHs/0C7ESL4syjZ0oIcwyUc9gLQVOi8MQNbh4QKZ/njMK0lxfSNd4+jfWtY1ds=
+before_install:
+- git fetch --tags --depth=10000
+- if [ $TRAVIS_PULL_REQUEST = 'false' ]; then openssl aes-256-cbc -K $encrypted_5d03c3334c1b_key
+  -iv $encrypted_5d03c3334c1b_iv -in travis/secrets.tar.enc -out travis/secrets.tar
+  -d; tar xv -C travis -f travis/secrets.tar; fi
+script:
+- sbt ++$TRAVIS_SCALA_VERSION fmtCheck
+- sbt ++$TRAVIS_SCALA_VERSION clean compileWithMacroParadise test
+after_success:
+- test $PUBLISH == "true" && test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH
+  == "master" && GPG_WARN_ON_FAILURE=true sbt ++$TRAVIS_SCALA_VERSION clean compileWithMacroParadise
+  releaseEarly
