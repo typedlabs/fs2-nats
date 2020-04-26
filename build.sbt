@@ -3,7 +3,7 @@ lazy val scala213 = "2.13.1"
 lazy val supportedScalaVersions = List(scala212, scala213)
 
 lazy val scalaSettings = Seq(
-  scalaVersion := scala212,
+  scalaVersion := scala213,
   scalacOptions ++= scalacOptionsFor(scalaVersion.value),
   scalacOptions.in(Compile, console) ~= filterConsoleScalacOptions,
   scalacOptions.in(Test, console) ~= filterConsoleScalacOptions,
@@ -84,3 +84,4 @@ def compileWithMacroParadise: Command = Command.command("compileWithMacroParadis
 addCommandAlias("compile", "; compileWithMacroParadise")
 addCommandAlias("fmt", "; compile:scalafmt; test:scalafmt; scalafmtSbt")
 addCommandAlias("fmtCheck", "; compile:scalafmtCheck; test:scalafmtCheck; scalafmtSbtCheck")
+

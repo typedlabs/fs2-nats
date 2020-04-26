@@ -3,21 +3,21 @@ import sbt._
 object Dependencies {
 
   object Circe {
-    val core = "io.circe" %% "circe-core" % "0.12.1"
-    val generic = "io.circe" %% "circe-generic" % "0.12.1"
-    val parser = "io.circe" %% "circe-parser" % "0.12.1"
-    val genericExtras = "io.circe" %% "circe-generic-extras" % "0.12.2"
+    val core = "io.circe" %% "circe-core" % "0.13.0"
+    val generic = "io.circe" %% "circe-generic" % "0.13.0"
+    val parser = "io.circe" %% "circe-parser" % "0.13.0"
+    val genericExtras = "io.circe" %% "circe-generic-extras" % "0.13.0"
   }
 
   object Scodec {
-    val core = "org.scodec" %% "scodec-core" % "1.11.4"
-    val bits = "org.scodec" %% "scodec-bits" % "1.1.12"
+    val core = "org.scodec" %% "scodec-core" % "1.11.7"
+    val bits = "org.scodec" %% "scodec-bits" % "1.1.14"
     val stream = "org.scodec" %% "scodec-stream" % "2.0.0"
   }
 
   object Fs2 {
-    val core = "co.fs2" %% "fs2-core" % "2.0.0"
-    val io = "co.fs2" %% "fs2-io" % "2.0.0"
+    val core = "co.fs2" %% "fs2-core" % "2.3.0"
+    val io = "co.fs2" %% "fs2-io" % "2.3.0"
   }
 
   object Testing {
